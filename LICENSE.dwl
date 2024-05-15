@@ -1,3 +1,5 @@
+Portions of Jcomp are based on dwl code are used under the following license:
+
 dwl - dwm for Wayland
 
 Copyright © 2020 dwl team
