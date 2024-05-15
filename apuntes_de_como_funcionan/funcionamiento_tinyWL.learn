@@ -1,0 +1,30 @@
+main()
+  
+  -creamos el display con wl_display_create()
+  -creamos un backend y nos guardamos el eventloop()
+  -creamos un renderer, enlazamos el renderer con el backend
+    i lo hacemos con el wlr_allocator_autocreate()
+  -creamos un compositor y un subcompositor y un device_mgr
+  -creamos una manera de registrar cuando se crea un output device
+    y lo almacenamos en una lista de outputs
+  -creamos una scena 
+  -iniciamos una lista de los toplevels shells
+  -Creamos handlers para los eventos de crear un toplevel nuevo
+    y un popupnuevo
+  -Nos curramos el input
+  -creamos el socket
+  -hacemos el cleanup
+
+
+
+
+
+
+
+--------------------------------------------------------------------
+Terminologia:
+wlr_scene: abstraccion que se encarga de la renderizacion y del 
+           damage tracking lo unico que ha de hacer el compositor
+           con esta abstraccion lo unico que ha de hacer el compositor
+           es poner los elementos que quiera renderizar en la posicion correcta
+           entoces llamar wlr_scene_output_commit()

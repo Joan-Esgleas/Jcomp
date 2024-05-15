@@ -1,0 +1,39 @@
+---------------------------------------------
+Cliente:
+  Se conecta con el servidor mediante el wl_display
+  mediante esta conexion el cliente genera un wl_registry.
+  Este wl_registry ha de registrar cada vez que el servidor 
+  genera o destruye una evento global lo hara mediante un wl_registry_listener
+  tambien escuchara los eventos que se produzcan
+
+  ############################################################################
+
+  Creacion de un protocolo para crear una superficie que ensenye pixels:
+    -Obten un wl_display y un wl_registry
+    -Scanea el wl_registry y coge los eventos global los wl_compositor, wl_shm_pool
+    -Usa la interfaz del wl_compositor para crear una wl_surface
+    -Usa la interfaz wl_shell para describir el rol de tu superficie
+    -Usa la interfaz wl_shm para alocatar memoria compartida (entre el servidor y el cliente)
+      para establezer unos buffers donde almazenaras los pixeles
+    -Pinta algo en los pixeles que estan en la posicion de memoria que has denominado como buffers
+    -Enlaza la memoria compartida con wl_surface
+
+---------------------------------------------
+Servidor:
+  El servidor crea un wl_display y consigue el event_loop de ese display
+  Despues define unos globales y recursos que enlazara con el display que 
+  el cliente obtendra mediante el wl_registry
+
+
+---------------------------------------------
+Terminologia:
+
+wl_output = display en la targeta grafica
+wl_display (cliente) = componente con el que el cliente conecta con el servidor
+wl_registry (cliente) = componente que enumera
+                        los eventos globales disponibles en el servidor
+wl_event_loop = componente del wl_display al cual solo puede acceder el servidor
+                que tiene muchas herramientas utiles para el servidor como
+                timers, filedescriptors...
+
+Compositor state (server): wl_display + wl_event_loop

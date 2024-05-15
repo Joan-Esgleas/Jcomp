@@ -1,0 +1,14 @@
+https://drewdevault.com/2018/07/29/Wayland-shells.html
+
+Shell: Es como se les da un significado en Wayland a las superficies
+
+El cliente creara una surface y mediante la shell le dara atributos necesarios
+como el titulo, una vez el shell este listo el cliente lanzara el signal
+events.map para asociar la shell a la superficies y informar al server que ya 
+esta lista para ser dibujada (events.unmap) esconde la shell
+
+xdg-shell:
+Describe ventanas de applicacion
+
+toplevel windows:
+  root node of a tree of surfaces 

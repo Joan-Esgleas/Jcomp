@@ -1,0 +1,65 @@
+Server:
+  -Crear el display, obtener el event_loop
+  -Creamos el backend
+  -Iniciamos el backend y entramos en el event_loop
+  -El backend nos da una wl_signal que nos notifica cuando podemos usar un
+   dispositivo de output.
+  -Nos guardamos algo que escuche para nuevos output en un wl_listener, 
+   y nos guardaremos los outputs nuevos en una wl_list
+  -Para ir agregando outputs a medida que van siendo conectados hemos de crear
+   una funcion que se encargue de almazenar el nuevo output y atarla a la señal
+   de nuevo output para atarla hemos de usar wl_signal_add
+  -Una vez generada la lista de outputs correctamente escuchamos para el frame signal
+  -Ahora podemos creamos un wlr_renderer para dibujar algo con OpenGL, Vulkan...
+  
+
+  ->Para que las apps puedan interacutar con el Server:
+    -Cremos un socket para el wl_display del server
+    -Con wlroots podemos exportar una lista de eventos globales utiles
+     como puede ser el gamma_control_mgr, el screenshooter...
+  
+  -> Para poder dibujar ventanas
+    -Hemos de establecer un compositor
+    -En estse compositor los clientes nos pondran las superficies y nosotros
+     nos hemos de encargar de renderizarlas
+
+------------------------------------------------------
+Renderizado de superficies:
+Esto se hace con un shader, el cliente nos dara una 
+texture(monton de pixels de una superficie) y coordenadas en SCO
+nosotros tendremos que pasar esas coordenadas SCD
+wlroots nos da una transform matrix que hace eso
+
+como hacerlo:
+Declaramos una wlr_box (estructura de datos que es una caja en conrdenadas de dispositivo)
+Con la funcion wlr_matrix_projection box podemos conseguir una matriz que pasara
+nustro monton de pixeles que estan en SCO a pixeles en SCD dentro de la caja
+Ahora con esta matriz ya podemos rebderuzar la superficie que nos de el cliente
+
+------------------------------------------------------
+Terminologia:
+
+Backend: Abstracion de las implementaciones de bajo nivel de input
+         y output
+          -Cada backend puede crear los dispositivos de entrada 
+            y salida que quieras
+
+          Tipos de backend en wlroots:
+            -drm: backend que utiliza Linux DRM (Direct rendering manager)
+                  para hacer render a cosas directamente en tu pantalla fisica
+            -libinput: backend que enumera y controla dispositivos fisicos de input
+            -wayland: backend se encarga de crear "outputs" como ventanas
+                      estas ventanas ejecutan otro compositor Wayland
+                      esto te permite que un compositor corra encima de otro
+            -x11: backend que como el wayland backend te perminte abrir 
+                  un server x11 que a la vez abrira una ventana x11
+            -multi: backend que te permite abrir diversos backends a la vez
+                    Ej si quieres usar el bakend drm y libinput a la vez
+            
+            #La funcion wlr_backend_autocreate(wl_display) automaticamente 
+             escoje y retorna el backend mas apropiado
+
+wlr_renderer: estructura que proporciona wlroots que propotciona metodos para
+              renderizar cosas con OpenGL
+
+Compositor: es un wl_compositor eso donde los clientes ponian las superficies

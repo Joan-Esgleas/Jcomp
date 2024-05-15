@@ -1,0 +1,206 @@
+FUNCIONES AUXILIARES
+LISTEN_STATIC(E,H)
+  -Esta funcion lo q hace es basicamente enlazar una señal (E) con su funcion handler (H)
+
+-------------------------------------------------
+INICIO PROGRAMA
+
+setup()
+  -creamos xkv_context y keymap
+  -handeling signals
+  -empieza el log
+  
+  ########## Crear soporte para el compositor ##############
+  
+    -creamos wl_display_create() (waland_server_core)
+    -cramos un wayland_backend (wlroots)
+    -creamos una escena (wlr) 
+    -es de tipos wlr_scene que es un scene graph node (un arbol)
+    -la populamos con un recangulo de color rootcolor y lo guardamos en root_bg
+    -creamos un vetctor de wlr_scene con capas (layers) que derivan de la 
+        escena (raiz de la escena)
+    -creamos un drag_icon que es una escena que deriva de la scena original
+    -colocamos el drag_icon debajo de la ultima capa (LyrBlock) pero con el mismo nodo padre (escena)
+    -creamos un render(wlr) con lo q podamos y lo llamamos drw
+    -creamos un display que llamaos dpy
+        Un display es un objeto que representa la conecion con el backend
+        actua como un proxy para el servidor
+    -creamos un wlr_allocator q llamamos alloc
+        esto conecta el renderer con el backend esto se encarga de los buffer
+        asi wlroots puede pintar cosas en la pantalla
+    -creamos un compositor de tipo wlr_compositor (compositor)
+      esto es esto es basicamente un obejto que permite a los clientes
+      crear, destruir, modificar superficies (creo que esto son zonas donde se dibuja)
+    
+  ############## Creamos interficies ################################
+
+    -creamos un conjunto de interficies que no se muy bien q hacen
+    -creamos la interficies para urgent hints la llamamos activacion 
+      es de tipos wlr_xdg_activation y lo atamos a la funcion urgent q lo tratara
+    -creamos la interficie para gestionar el gamma y lo atamos a la funcion setgamma
+    
+    -cramos interficie para administrar un layout de monitores lo llamamos output_layout
+      en caso de que cambie llamaremos a la funcion updatemons
+    -creamos una interficie para detectar si se la ha añadido un monitor
+      lo asociamos a la funcion createmon
+  
+  > Hacemos una lista de clientes lo llamamos (clientes)
+  > una lista de layer-shell (ftack)
+    
+    -creamos una interficie para gestionar la creacion de nuevas superficies xdg
+      la associamos a la funcion createnotify
+
+    -creamos una interficie para gestionar la creacion de nuevas superficies layer
+      la associamos a la funcion createlayersurface
+
+    -creamos una interficies para gestionar el estado de ilde (guardamos en ilde_notifier)
+
+    -creamos una interficie para handeling apps que probocan ilde_inhibitors
+      associamos a la funcion createildeinhibitor
+
+    -creamos una interficies para administrar el bloqueo de session lo llamamos
+      session_lock_mgr y hacemos la associacion de una manera un poco rara investigalo
+
+    -Usamos server decoration protocol para negociar las server-side window decoration
+      para superficies xdg mejor investiga un poco esto
+      luego creamos una interfaz para administrarla y lo gestionamos con la funcion createdecorations
+
+    -creamos una interficie para gestionar cuando una applicacion genera
+      una constraint de puntero lo associamos a la funcion createpointerconstraints
+
+    -creamos una interficie para gestionar la creacion de pointers que necesitan movimiento relativo
+      esto lo guradamos en la variable relative_pointer_mgr
+
+  ############# Cursor #####################################
+  
+  -creamos un cursor y lo llamaos cursor
+  -lo associamos al layout que hemos creado (output_layout)
+  -creamos un cursor manager lo llamamos cursor_mgr
+    usamos el cursor manager para dibujar el cursor
+  -ponemos el tamaño del cursor a 24 mediante la variable de entorno XCURSOR_SIZE
+  -Creamos diversas interficies para el movimiento del cursor
+    -una para administrar el movimiento relativo
+    -una para administrar el movimiento absoluto
+    -una para administrar el presionar un boton
+    -una para administrar el movimiento de la ruedezita
+    -una para administrar la el evento de acctualizacion del estado del cursor
+      (Frame event)
+    -una para que los clientes puedan cambiar la forma del cursor
+      Esto es para cosas como cuando el cursor esta encima de texto boton estas cosas
+      Pillara las imagenes de Xcursors
+
+  ########## Input devices ######################################
+  
+  -creamos una interfaz para administrar la conexion de un nuevo dispositivo de entrada
+    lo administramos con la funcion inputdevice
+
+  -creamos una interficie para la creacion de teclados virtuales
+    lo administramos con la funcion virtualkeyboard
+
+  -creamos una interficie para pointers virtuales
+    lo administramos con virtualpointer
+  
+  -creamos un seat lo metemos en la variable seat y le damos la id seat0
+    -creamos una interficie para administra el cambio de forma de un cursor
+    -creamos una interficie para selecionar
+    -creamos una interficie para hacer una selecion primaria lo q coño quiera decir eso
+    -creamos una interficie para cuando haya un request de arrastrar
+    -cramos una interficie para cuando empieza el arrastre
+  
+  -creamos un grupo de teclados de los teclados conectados lo guardamos en kb_group
+  -creamos un grupo de teclados virtuales lo guardamos en vkb_group
+  -creamos un contexto para los teclados lo llamos context
+  -creamos un keymap que llamamos keymap y le ponemos las xkb_rules que hemos definido en el config.h
+  -enlazamos los teclados del grupo con el keymap
+  -enlazamos los teclados virtuales del grupo con el keymap
+  -limpiamos el keymap y el contexto
+  -ponemos en los teclados y los v_teclados el repeat_rate, y el repeat_delay 
+    que hemos configurando en config
+  -Creamos las inteficies para escuchar en caso de pulsar un boton en el teclado
+    lo assignamos en el handler keypress
+  -Creamos las inteficies para escuchar en caso de pulsar un boton modificador en el teclado
+    lo assignamos en el handler keypressmod
+  -Creamos las inteficies para escuchar en caso de pulsar un boton en el teclado virtual
+    lo assignamos en el handler keypress
+  -Creamos las inteficies para escuchar en caso de pulsar un boton modificador en el teclado virtual
+    lo assignamos en el handler keypressmod
+  -Hacemos un poco de brujeria para administrar los keybindigs
+  -Con el wlr-group que son los teclados los enlazamos con el seat acutal
+  -Creamos una interficie con el fin que los clientes puedan cambiar el la configuracion de los monitores
+  
+  -Se inicia la presentacion de la escena (inicia el dibujo de cosas en la pantalla)
+
+  ******************* Cosas de XWayland ***********************
+   
+
+  *************************************************************
+
+
+run(startup_cmd)
+  en startup_cmd va el comando que quieras en caso de que el argumento sea -s
+
+  -creamos un socket donde ponemos el display
+  -iniciamos el backend
+  -hacemos un fork y mediante un pipe le pasamos el comando en startup_cmd
+  -selecionamos el monitor en funcion de la posicion y empezamos el cursor
+  - generamos el display
+
+cleanUp()
+  cerramos todo
+
+    
+
+
+
+
+
+
+
+
+----------------------------------------------------------
+CONCEPTOS IMPORTANTES:
+
+wl_output: Pantallas conectadas a la graifica
+
+xdg_shell: Protocolo estandar usado por las aplicaciones 
+           (normalmente ventanas) sue usa para superficies
+           de los programas.
+           Soporta operaciones de gestion de ventanas
+           como minimizar, redimensionar...
+
+layer_shell: Protocolo usado para superficies por superficies
+             que no son ventans ej: fondo de pantalla, paneles, barras, 
+             notificaciones...
+             Permite especificar en que capa aparecera (top,bottom,overlay,background)
+
+Superficie: Abstraccion que permite a las applicaciones dibujar en un area rectangular
+            administirada por el compositor
+
+            wl_surface: unidad basica de superficie
+            xdg_surface: superficie associada a xdg_shell
+            layer_surface: superficie associoada a layer_shell
+
+Seat: Abstraccion que representa un conjunto de dispositivios de entrada
+      associados a un usuario.
+
+Ilde: Estado del dispositivo cuando el usuario no interaractua
+
+Session lock: bloquear la session (ej: lock screen)
+
+Pointer: estructura de datos que representa un dispositivo con el que puedes clicar
+        Ej: raton
+
+Layout: abstraccion que representa el espacio creado por la combinacion de los monitores
+
+Frame: Contenido que se renderiza en la pantalla
+
+Frame event: Parte del protocolo que permite a los clientes saber cuando se debe 
+              actualizar el contenido de la superficie
+
+
+-------------------------Preguntas-----------------------------------------------------
+cuando el evento del cursor_shape_mgr request_set_shape passa y no el set_cursor?
+ergo pq existe el cursor cursor_shape_mgr? Porque hay dos protocolos, las apps que solo
+usan cursor-shape-v1 solo usaran request_set_shape y no request_set_cursor encambio si usan
+otro protocolo usaran el request_set_cursor
+              
