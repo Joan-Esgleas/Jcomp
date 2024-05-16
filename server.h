@@ -1,8 +1,6 @@
-#include <wlr/util/box.h>
 #include "keyboard.h"
+#include "client.h"
 
-typedef struct Monitor Monitor;
-typedef struct Client Client;
 
 enum {
   LyrBg,
@@ -20,7 +18,7 @@ static const int layermap[] = {LyrBg, LyrBottom, LyrTop, LyrOverlay};
 
 typedef struct  {
   //Core utils
-  struct wl_display *wl_display;
+  struct wl_display *display;
   struct wlr_backend *backend;
   struct wlr_renderer *renderer;
   struct wlr_allocator *allocator;

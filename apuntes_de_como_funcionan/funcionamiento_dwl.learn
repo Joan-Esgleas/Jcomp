@@ -190,7 +190,8 @@ Session lock: bloquear la session (ej: lock screen)
 Pointer: estructura de datos que representa un dispositivo con el que puedes clicar
         Ej: raton
 
-Layout: abstraccion que representa el espacio creado por la combinacion de los monitores
+Layout: abstraccion que representa el espacio creado por la 
+        combinacion de los monitores
 
 Frame: Contenido que se renderiza en la pantalla
 
