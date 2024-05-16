@@ -1,135 +1,78 @@
 /*
  * See LICENSE file for copyright and license details.
  */
-#include <getopt.h>
-#include <libinput.h>
-#include <linux/input-event-codes.h>
-#include <signal.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <sys/wait.h>
-#include <time.h>
 #include <unistd.h>
 #include <wayland-server-core.h>
-#include <wlr/backend.h>
-#include <wlr/backend/libinput.h>
-#include <wlr/render/allocator.h>
-#include <wlr/render/wlr_renderer.h>
-#include <wlr/types/wlr_compositor.h>
-#include <wlr/types/wlr_cursor.h>
-#include <wlr/types/wlr_cursor_shape_v1.h>
-#include <wlr/types/wlr_data_control_v1.h>
-#include <wlr/types/wlr_data_device.h>
-#include <wlr/types/wlr_drm.h>
-#include <wlr/types/wlr_export_dmabuf_v1.h>
-#include <wlr/types/wlr_fractional_scale_v1.h>
-#include <wlr/types/wlr_gamma_control_v1.h>
-#include <wlr/types/wlr_idle_inhibit_v1.h>
-#include <wlr/types/wlr_idle_notify_v1.h>
-#include <wlr/types/wlr_input_device.h>
-#include <wlr/types/wlr_keyboard.h>
-#include <wlr/types/wlr_keyboard_group.h>
-#include <wlr/types/wlr_layer_shell_v1.h>
-#include <wlr/types/wlr_linux_dmabuf_v1.h>
-#include <wlr/types/wlr_output.h>
-#include <wlr/types/wlr_output_layout.h>
-#include <wlr/types/wlr_output_management_v1.h>
-#include <wlr/types/wlr_pointer.h>
-#include <wlr/types/wlr_pointer_constraints_v1.h>
-#include <wlr/types/wlr_presentation_time.h>
-#include <wlr/types/wlr_primary_selection.h>
-#include <wlr/types/wlr_primary_selection_v1.h>
-#include <wlr/types/wlr_relative_pointer_v1.h>
-#include <wlr/types/wlr_scene.h>
-#include <wlr/types/wlr_screencopy_v1.h>
-#include <wlr/types/wlr_seat.h>
-#include <wlr/types/wlr_server_decoration.h>
-#include <wlr/types/wlr_session_lock_v1.h>
-#include <wlr/types/wlr_single_pixel_buffer_v1.h>
-#include <wlr/types/wlr_subcompositor.h>
-#include <wlr/types/wlr_viewporter.h>
-#include <wlr/types/wlr_virtual_keyboard_v1.h>
-#include <wlr/types/wlr_virtual_pointer_v1.h>
-#include <wlr/types/wlr_xcursor_manager.h>
-#include <wlr/types/wlr_xdg_activation_v1.h>
-#include <wlr/types/wlr_xdg_decoration_v1.h>
-#include <wlr/types/wlr_xdg_output_v1.h>
-#include <wlr/types/wlr_xdg_shell.h>
-#include <wlr/util/log.h>
-#include <wlr/util/region.h>
-#include <xkbcommon/xkbcommon.h>
-#ifdef XWAYLAND
-#include <wlr/xwayland.h>
-#include <xcb/xcb.h>
-#include <xcb/xcb_icccm.h>
-#endif
 
 #include "config.h"
+#include "server.h"
 #include "util.h"
 
-
-//TODO: implement this
-void handlesig(int signo); 
+// TODO: implement this
+void handlesig(int signo);
 
 void setup(void) {
-  //TODO: create display
-  
-  //TODO: create backend  
+  // TODO: create display
 
-  //TODO: create scene
-    
-  //TODO: create renderer
+  // TODO: create backend
 
-  //TODO: create compositor
-  
-  //TODO: create wlr_set interfaces
-  
-  //TODO: gama color_mgr bind handler
+  // TODO: create scene
 
-  //TODO: output layoud creation handler
+  // TODO: create renderer
 
-  //TODO: new outputs abilable handler
+  // TODO: create compositor
 
-  //TODO: Create a list of window clients
-  
-  //TODO: new xdg_shell surface handler
+  // TODO: create wlr_set interfaces
 
-  //TODO: new layer_shell handler 
-    
-  //TODO: ilde manager
+  // TODO: gama color_mgr bind handler
 
-  //TODO: session lock mgr
-  
-  //TODO: decoration implementation
-  
-  //TODO: pointer constraints relative pointer
+  // TODO: output layoud creation handler
 
-  //TODO: cursor stuff
+  // TODO: new outputs abilable handler
 
-  //TODO: keyboard stuff
+  // TODO: Create a list of window clients
 
-  //TODO: touchscreen stuff
+  // TODO: new xdg_shell surface handler
 
-  //TODO: seat stuff
+  // TODO: new layer_shell handler
 
-  //TODO: keyboard stuff
+  // TODO: ilde manager
 
-  //TODO: virtual stuff
+  // TODO: session lock mgr
 
-  //TODO: output manager handlers
+  // TODO: decoration implementation
 
-  //TODO: start presentation
+  // TODO: pointer constraints relative pointer
 
-  //TODO: XWAYLAND stuff
+  // TODO: cursor stuff
+
+  // TODO: keyboard stuff
+
+  // TODO: touchscreen stuff
+
+  // TODO: seat stuff
+
+  // TODO: keyboard stuff
+
+  // TODO: virtual stuff
+
+  // TODO: output manager handlers
+
+  // TODO: start presentation
+
+  // TODO: XWAYLAND stuff
 }
 
 void run(char *startup_cmd) {
-  //TODO: start server socket
+  // TODO: start server socket
 
-  //TODO: start backend
+  // TODO: start backend
 
   /* Run startup command
-  */
+   */
+  pid_t child_pid = -1;
   if (startup_cmd) {
     int piperw[2];
     if (pipe(piperw) < 0)
@@ -148,27 +91,27 @@ void run(char *startup_cmd) {
     close(piperw[0]);
   }
 
-  //TODO: set cursor
-  
-  //TODO: run display
+  // TODO: set cursor
+
+  // TODO: run display
 }
 
 void cleanup(void) {
-  //TODO: cleanup XWAYLAND stuff
+  // TODO: cleanup XWAYLAND stuff
 
-  //TODO: cleanup dpy
+  // TODO: cleanup dpy
 
-  //TODO: cleanup childs
+  // TODO: cleanup childs
 
-  //TODO: cleanup cursor
+  // TODO: cleanup cursor
 
-  //TODO: cleanup output layout
+  // TODO: cleanup output layout
 
-  //TODO: cleanup keyboard
+  // TODO: cleanup keyboard
 
-  //TODO: cleanup display
+  // TODO: cleanup display
 
-  //TODO: cleanup scene
+  // TODO: cleanup scene
 }
 
 int main(int argc, char *argv[]) {
@@ -191,11 +134,11 @@ int main(int argc, char *argv[]) {
     die("XDG_RUNTIME_DIR must be set");
 
   // TODO: implement handlesig
-  int i, sig[] = {SIGCHLD, SIGINT, SIGTERM, SIGPIPE};
+  int sig[] = {SIGCHLD, SIGINT, SIGTERM, SIGPIPE};
   struct sigaction sa = {.sa_flags = SA_RESTART, .sa_handler = handlesig};
   sigemptyset(&sa.sa_mask);
 
-  for (i = 0; i < (int)LENGTH(sig); i++)
+  for (int i = 0; i < (int)LENGTH(sig); i++)
     sigaction(sig[i], &sa, NULL);
 
   wlr_log_init(log_level, NULL);

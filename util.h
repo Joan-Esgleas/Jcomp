@@ -1,5 +1,4 @@
 /* See LICENSE.dwl file for copyright and license details. */
-
 /* macros */
 #define MAX(A, B) ((A) > (B) ? (A) : (B))
 #define MIN(A, B) ((A) < (B) ? (A) : (B))
@@ -16,7 +15,6 @@
     static struct wl_listener _l = {.notify = (H)};                            \
     wl_signal_add((E), &_l);                                                   \
   } while (0)
-
 
 
 void die(const char *fmt, ...);
