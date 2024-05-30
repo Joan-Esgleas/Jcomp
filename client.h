@@ -1,4 +1,6 @@
 #include "output_monitor.h"
+#include "util.h"
+#include <wayland-util.h>
 
 typedef enum  { XDGShell, LayerShell, X11 }client_Type;
 typedef struct {
@@ -49,3 +51,14 @@ typedef struct {
   uint32_t resize; /* configure serial of a pending resize */
 
 } Client;
+
+Client *focustop(Server *s,Monitor *m) {
+  Client *c;
+  wl_list_for_each(c, &s->fstack, flink) {
+    if (VISIBLEON(c, m))
+      return c;
+  }
+  return NULL;
+}
+
+static inline void client_set_suspended(Client *c, int suspended);

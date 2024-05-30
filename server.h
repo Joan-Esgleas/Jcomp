@@ -34,6 +34,7 @@ typedef struct  {
   //Surface
   struct wlr_surface *held_grab;
   struct wl_list fstack; /* focus order */
+  struct wl_list clients; /* focus order */
   void *exclusive_focus;
 
   //Xdg Surface
@@ -63,7 +64,6 @@ typedef struct  {
   struct wlr_output_layout *output_layout;
   struct wlr_box sgeom;
   struct wl_list mons;
-  Monitor *selmon;
 
   //Gamma control manager
   struct wlr_gamma_control_manager_v1 *gamma_control_mgr;
@@ -85,10 +85,6 @@ typedef struct  {
   KeyboardGroup vkb_group;
   KeyboardGroup kb_group;
 
-  //Client stuff
-  Client *grabc;
-  int grabcx, grabcy; /* client-relative */
-
   //XWAYLAND stuff
 #ifdef XWAYLAND
   void activatex11(struct wl_listener *listener, void *data);
@@ -103,3 +99,5 @@ typedef struct  {
   xcb_atom_t netatom[NetLast];
 #endif
 }Server;
+
+

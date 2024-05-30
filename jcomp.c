@@ -103,7 +103,8 @@ void setup(void) {
 
   // TODO: output layoud creation handler
   main_server.output_layout = wlr_output_layout_create();
-
+  // init layoud:
+  main_server.scene_layout = wlr_scene_attach_output_layout(main_server.scene, main_server.output_layout);
   // TODO: new outputs abilable handler
 
   // TODO: Create a list of window clients
